@@ -14,7 +14,7 @@ import AnimateBackground from '@/shared/ui/AnimateBackground.vue';
           <a :class="classes.navigation_link" target="_blank" href="/">(icon) GitHub проекта</a>
         </nav>
         <Button>
-          <RouterLink :class="classes.navigation_link" to="/admin">Вход</RouterLink>
+          <RouterLink :class="classes.navigation_link" to="/auth">Вход</RouterLink>
         </Button>
       </div>
     </template>
@@ -29,23 +29,6 @@ import AnimateBackground from '@/shared/ui/AnimateBackground.vue';
           <!-- Массив -->
           <div :class="classes.projects">
             <!-- entities -->
-            <div :class="classes.project">
-              <div>
-                <h4>Проект на vuejs + vite</h4>
-                <p>Технологии:</p>
-                <ul>
-                  <li>vuejs</li>
-                  <li>vue router</li>
-                  <li>pinia</li>
-                  <li>vite</li>
-                  <li>axios</li>
-                </ul>
-              </div>
-              <div :class="classes.project_action">
-                <RouterLink to="/">Link github</RouterLink>
-                <Button>Драйвер детализации</Button>
-              </div>
-            </div>
             <div :class="classes.project">
               <div>
                 <h4>Проект vuejs + ts + vite</h4>

@@ -6,6 +6,7 @@ const { size = 'default', ...props } = defineProps({ size: String });
 </template>
 <style module="classes" lang="scss">
 .root {
+  cursor: pointer;
 }
 
 .large {
