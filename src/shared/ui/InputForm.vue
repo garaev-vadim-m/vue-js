@@ -10,7 +10,7 @@ const {
   type = 'text',
   required = false,
 } = defineProps<{
-  label: string;
+  label?: string;
   errorMessage?: string;
   placeholder?: string;
   type?: 'password' | 'email' | 'text';

@@ -17,12 +17,18 @@ const errors = ref({
 
 const router = useRouter();
 
-function sendAuth() {
+function validateAuth() {
   let hasError = false;
 
   errors.value.email = '';
   errors.value.password = '';
   hasError = false;
+
+  if (user.value.email !== 'root@mail.ru' || user.value.password !== '1111') {
+    errors.value.email = 'Не правильный email';
+    errors.value.password = 'Не правильный пароль';
+    hasError = true;
+  }
 
   if (!user.value.email) {
     errors.value.email = 'Email обязателен';
@@ -36,7 +42,13 @@ function sendAuth() {
     errors.value.password = 'Пароль обязателен';
     hasError = true;
   }
-  if (hasError) return;
+
+  return hasError;
+}
+
+function sendAuth() {
+  if (validateAuth()) return;
+  sessionStorage.setItem('user', JSON.stringify(user.value));
   return router.push('/admin');
 }
 </script>
@@ -48,6 +60,7 @@ function sendAuth() {
     <template #main>
       <div :class="classes.root">
         <h3>Авторизация</h3>
+        <h4>email: root@mail.ru; password: 1111</h4>
         <form action="subb-form" autocomplete="off" :class="classes.auth">
           <InputForm
             v-model="user.email"

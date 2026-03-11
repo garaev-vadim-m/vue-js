@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import Button from '@/shared/ui/Button.vue';
 import MainLayout from '@/widgets/layout/MainLayout.vue';
+import InputForm from '@/shared/ui/InputForm.vue';
+import { useRouter } from 'vue-router';
 
 type User = {
   id: number;
@@ -84,32 +86,52 @@ function changeUser(user: User) {
   modelUser.value = { ...user };
 }
 
-onMounted(getUsers);
+const router = useRouter();
+
+function onExit() {
+  sessionStorage.removeItem('user');
+  router.push('/');
+}
+
+onBeforeMount(getUsers);
 </script>
 
 <template>
   <MainLayout>
     <template #header>
-      <RouterLink to="/">Главная</RouterLink>
-      <Button>Выйти</Button>
+      <div class="flex items-center justify-between w-[100%]">
+        <RouterLink to="/">Главная</RouterLink>
+        <Button @click="onExit">Выйти</Button>
+      </div>
     </template>
   </MainLayout>
   <div :class="classes.root">
+    <h1>Страница для валидации</h1>
     <div v-for="user of users">
-      <div>
+      <div :class="classes.buttonList">
         {{ user }}
-        <button @click="changeUser(user)">change</button>
-        <button @click="setUpdateUser(user)">update</button>
-        <button type="submit" @click.prevent="deleteUser(user)">DeleteUser</button>
+        <Button @click="changeUser(user)">change</Button>
+        <Button @click="setUpdateUser(user)">update</Button>
+        <Button type="submit" @click.prevent="deleteUser(user)">DeleteUser</Button>
       </div>
     </div>
-    <input v-model="modelUser.name" />
-    <input v-model="modelUser.email" />
-    <button type="submit" @click.prevent="setUser(modelUser)">SetUser</button>
+    <InputForm v-model="modelUser.name" />
+    <InputForm v-model="modelUser.email" />
+    <Button type="submit" @click.prevent="setUser(modelUser)">SetUser</Button>
   </div>
 </template>
 
 <style module="classes">
 .root {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.buttonList {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 </style>
