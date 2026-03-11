@@ -1,8 +1,42 @@
-<script setup>
+<script setup lang="ts">
 import { RouterLink } from 'vue-router';
 import Button from '@/shared/ui/Button.vue';
 import MainLayout from '@/widgets/layout/MainLayout.vue';
 import AnimateBackground from '@/shared/ui/AnimateBackground.vue';
+import Card from '@/entities/card/Card.vue';
+
+const projects = [
+  {
+    id: 1,
+    title: 'Проект vuejs + ts + vite',
+    technology: [
+      {
+        id: 1,
+        name: 'vuejs',
+      },
+      {
+        id: 2,
+        name: 'vue router',
+      },
+      {
+        id: 3,
+        name: 'typescript',
+      },
+      {
+        id: 4,
+        name: 'pinia',
+      },
+      {
+        id: 5,
+        name: 'vite',
+      },
+      {
+        id: 6,
+        name: 'axios',
+      },
+    ],
+  },
+];
 </script>
 
 <template>
@@ -28,38 +62,19 @@ import AnimateBackground from '@/shared/ui/AnimateBackground.vue';
           </div>
           <!-- Массив -->
           <div :class="classes.projects">
-            <!-- entities -->
-            <div :class="classes.project">
-              <div>
-                <h4>Проект vuejs + ts + vite</h4>
+            <Card v-for="project of projects">
+              <template #title>{{ project.title }}</template>
+              <template #body>
                 <p>Технологии:</p>
                 <ul>
-                  <li>vuejs</li>
-                  <li>vue router</li>
-                  <li>typescript</li>
-                  <li>pinia</li>
-                  <li>vite</li>
-                  <li>axios</li>
+                  <li v-for="tech of project.technology">{{ tech.name }}</li>
                 </ul>
-              </div>
-              <div :class="classes.project_action">
-                <RouterLink to="/">Link github</RouterLink>
-                <Button>Драйвер детализации</Button>
-              </div>
-            </div>
-            <div :class="classes.project">
-              <div>
-                <h4>Проект на Go</h4>
-                <p>Технологии:</p>
-                <ul>
-                  <li>Go</li>
-                </ul>
-              </div>
-              <div :class="classes.project_action">
-                <RouterLink to="/">Link github</RouterLink>
-                <Button>Драйвер детализации</Button>
-              </div>
-            </div>
+                <div :class="classes.project_action">
+                  <RouterLink to="/">Link github</RouterLink>
+                  <Button>Драйвер детализации</Button>
+                </div>
+              </template>
+            </Card>
           </div>
         </div>
       </AnimateBackground>

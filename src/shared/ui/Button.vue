@@ -1,8 +1,10 @@
-<script setup>
+<script setup lang="ts">
 const { size = 'default', ...props } = defineProps({ size: String });
 </script>
 <template>
-  <button v-bind="props" :class="[classes.root, classes[size]]"><slot>BaseComponent</slot></button>
+  <div>
+    <button v-bind="props" :class="[classes.root, classes[size]]"><slot>BaseComponent</slot></button>
+  </div>
 </template>
 <style module="classes" lang="scss">
 .root {

@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import Button from '@/shared/ui/Button.vue';
 import InputForm from '@/shared/ui/InputForm.vue';
 import MainLayout from '@/widgets/layout/MainLayout.vue';
-import { reactive, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const user = ref({
   email: '',
