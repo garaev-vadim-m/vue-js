@@ -4,6 +4,8 @@ import Button from '@/shared/ui/Button.vue';
 import MainLayout from '@/widgets/layout/MainLayout.vue';
 import AnimateBackground from '@/shared/ui/AnimateBackground.vue';
 import Card from '@/entities/card/Card.vue';
+import Drawer from '@/shared/ui/Drawer.vue';
+import { onUnmounted, ref } from 'vue';
 
 const projects = [
   {
@@ -35,8 +37,15 @@ const projects = [
         name: 'axios',
       },
     ],
+    decstiprion: 'Тут будет описание',
   },
 ];
+
+const drawer = ref(false);
+
+function onOpenDrawer() {
+  drawer.value = !drawer.value;
+}
 </script>
 
 <template>
@@ -71,8 +80,9 @@ const projects = [
                 </ul>
                 <div :class="classes.project_action">
                   <RouterLink to="/">Link github</RouterLink>
-                  <Button>Драйвер детализации</Button>
+                  <Button @click="onOpenDrawer">Драйвер детализации</Button>
                 </div>
+                <Drawer v-model="drawer" />
               </template>
             </Card>
           </div>
@@ -111,7 +121,7 @@ const projects = [
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(100vh - 53px - 32px);
+  height: calc(100vh - 53px);
   padding: 16px;
 }
 

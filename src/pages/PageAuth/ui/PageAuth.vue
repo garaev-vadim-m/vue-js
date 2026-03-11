@@ -93,7 +93,7 @@ function sendAuth() {
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
   width: 300px;
   border: 1px solid rgb(105, 105, 105);
   border-radius: 5px;
