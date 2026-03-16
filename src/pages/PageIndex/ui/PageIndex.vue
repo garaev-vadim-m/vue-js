@@ -79,7 +79,7 @@ function onOpenDrawer() {
                   <li v-for="tech of project.technology">{{ tech.name }}</li>
                 </ul>
                 <div :class="classes.project_action">
-                  <RouterLink to="/">Link github</RouterLink>
+                  <a href="https://github.com/garaev-vadim-m/vue-js" target="_blank">Link github</a>
                   <Button @click="onOpenDrawer">Драйвер детализации</Button>
                 </div>
                 <Drawer v-model="drawer" />
