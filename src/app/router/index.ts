@@ -21,8 +21,8 @@ export const router = createRouter({
 
 router.beforeEach((to) => {
   const requiresAuth = to.meta.requiresAuth;
-  const userAuth = sessionStorage.getItem('user');
-  if (requiresAuth && JSON.parse(userAuth) !== null) return true;
-  if (JSON.parse(userAuth) !== null && to.name !== 'Index') return { name: 'Admin' };
-  if (requiresAuth && JSON.parse(userAuth) === null) return { name: 'Auth' };
+  const userAuth = sessionStorage.getItem('token');
+  if (requiresAuth && userAuth !== null) return true;
+  if (userAuth !== null && to.name !== 'Index') return { name: 'Admin' };
+  if (requiresAuth && userAuth === null) return { name: 'Auth' };
 });

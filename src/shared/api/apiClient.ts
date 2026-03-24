@@ -12,7 +12,10 @@ export const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    // Do something before request is sent
+    const token = sessionStorage.getItem('token'); // достаём токен
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`; // подставляем
+    }
     return config;
   },
   (error) => {

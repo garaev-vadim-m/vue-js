@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router';
 import { getUsers } from '@/entities/users/api/getUsers';
 import { useUserModel, type User } from '@/entities/users/model/userModel';
 import { storeToRefs } from 'pinia';
+import { sendLogout } from '@/pages/PageAuth/api/sendLogout';
 
 const userModel = useUserModel();
 
@@ -25,33 +26,16 @@ async function setUser(formData: Pick<User, 'name' | 'email'>) {
   modelUser.value.email = '';
 }
 
-// async function deleteUser(user: User) {
-//   users.value = users.value.filter(({ id }) => id !== user.id);
-// }
-
-// async function setUpdateUser(user: User) {
-//   const { id } = modelUser.value;
-
-//   // await apiClient.patch(`/users/${id}`, { name, email });
-//   const userIndex = users.value.findIndex(({ id }) => id === user.id);
-//   users.value[userIndex] = {
-//     id,
-//     name: modelUser.value.name,
-//     email: modelUser.value.email,
-//   };
-//   modelUser.value.name = '';
-//   modelUser.value.email = '';
-// }
-
-// function changeUser(user: User) {
-//   modelUser.value = { ...user };
-// }
-
 const router = useRouter();
 
-function onExit() {
-  sessionStorage.removeItem('user');
-  router.push('/');
+async function onExit() {
+  try {
+    // await sendLogout();
+    sessionStorage.removeItem('token');
+    router.push('/');
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 onBeforeMount(userModel.onUsers);

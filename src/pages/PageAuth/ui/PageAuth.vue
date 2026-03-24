@@ -45,8 +45,8 @@ async function onSendAuth() {
   try {
     if (validateAuth()) return;
     //logic auth
-    await sendAuth(user.value);
-    sessionStorage.setItem('user', JSON.stringify(user.value));
+    const { data } = await sendAuth(user.value);
+    sessionStorage.setItem('token', data.token);
     return router.push('/admin');
   } catch (error) {
     console.error(error);
