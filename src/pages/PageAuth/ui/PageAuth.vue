@@ -4,6 +4,7 @@ import InputForm from '@/shared/ui/InputForm.vue';
 import MainLayout from '@/widgets/layout/MainLayout.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { sendAuth } from '../api/sendAuth';
 
 const user = ref({
   email: '',
@@ -24,12 +25,6 @@ function validateAuth() {
   errors.value.password = '';
   hasError = false;
 
-  if (user.value.email !== 'root@mail.ru' || user.value.password !== '1111') {
-    errors.value.email = 'Не правильный email';
-    errors.value.password = 'Не правильный пароль';
-    hasError = true;
-  }
-
   if (!user.value.email) {
     errors.value.email = 'Email обязателен';
     hasError = true;
@@ -46,10 +41,16 @@ function validateAuth() {
   return hasError;
 }
 
-function sendAuth() {
-  if (validateAuth()) return;
-  sessionStorage.setItem('user', JSON.stringify(user.value));
-  return router.push('/admin');
+async function onSendAuth() {
+  try {
+    if (validateAuth()) return;
+    //logic auth
+    await sendAuth(user.value);
+    sessionStorage.setItem('user', JSON.stringify(user.value));
+    return router.push('/admin');
+  } catch (error) {
+    console.error(error);
+  }
 }
 </script>
 <template>
@@ -78,7 +79,7 @@ function sendAuth() {
             :error-message="errors.password"
             :required="true" />
 
-          <Button type="submit" @click.prevent="sendAuth">Войти</Button>
+          <Button type="submit" @click.prevent="onSendAuth">Войти</Button>
         </form>
       </div>
     </template>

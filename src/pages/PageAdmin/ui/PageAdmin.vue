@@ -5,22 +5,12 @@ import MainLayout from '@/widgets/layout/MainLayout.vue';
 import InputForm from '@/shared/ui/InputForm.vue';
 import { useRouter } from 'vue-router';
 import { getUsers } from '@/entities/users/api/getUsers';
-import type { AxiosRequestConfig } from 'axios';
+import { useUserModel, type User } from '@/entities/users/model/userModel';
+import { storeToRefs } from 'pinia';
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-};
-const users = ref<User[]>([]);
-async function onUsers({ params }: { params?: AxiosRequestConfig } = {}) {
-  const { data } = await getUsers({
-    ...params,
-  });
-  console.log(data);
-  if (!data) return;
-  users.value = [...data];
-}
+const userModel = useUserModel();
+
+const { users } = storeToRefs(userModel);
 
 const modelUser = ref({
   id: 0,
@@ -33,7 +23,6 @@ async function setUser(formData: Pick<User, 'name' | 'email'>) {
 
   modelUser.value.name = '';
   modelUser.value.email = '';
-  onUsers();
 }
 
 // async function deleteUser(user: User) {
@@ -65,7 +54,7 @@ function onExit() {
   router.push('/');
 }
 
-onBeforeMount(onUsers);
+onBeforeMount(userModel.onUsers);
 </script>
 
 <template>
