@@ -4,6 +4,8 @@ import Button from '@/shared/ui/Button.vue';
 import MainLayout from '@/widgets/layout/MainLayout.vue';
 import InputForm from '@/shared/ui/InputForm.vue';
 import { useRouter } from 'vue-router';
+import { getUsers } from '@/entities/users/api/getUsers';
+import type { AxiosRequestConfig } from 'axios';
 
 type User = {
   id: number;
@@ -11,40 +13,13 @@ type User = {
   email: string;
 };
 const users = ref<User[]>([]);
-async function getUsers(params = {}) {
-  const data = ref([
-    {
-      id: 1,
-      name: 'name',
-      email: 'email',
-    },
-    {
-      id: 2,
-      name: 'name',
-      email: 'email',
-    },
-    {
-      id: 3,
-      name: 'name',
-      email: 'email',
-    },
-    {
-      id: 4,
-      name: 'name',
-      email: 'email',
-    },
-    {
-      id: 5,
-      name: 'name',
-      email: 'email',
-    },
-    {
-      id: 6,
-      name: 'name',
-      email: 'email',
-    },
-  ]);
-  users.value = [...data.value];
+async function onUsers({ params }: { params?: AxiosRequestConfig } = {}) {
+  const { data } = await getUsers({
+    ...params,
+  });
+  console.log(data);
+  if (!data) return;
+  users.value = [...data];
 }
 
 const modelUser = ref({
@@ -55,36 +30,33 @@ const modelUser = ref({
 
 async function setUser(formData: Pick<User, 'name' | 'email'>) {
   // await apiClient.post('/users', formData);
-  users.value.push({
-    ...formData,
-    id: Math.random(),
-  });
+
   modelUser.value.name = '';
   modelUser.value.email = '';
-  // getUsers();
+  onUsers();
 }
 
-async function deleteUser(user: User) {
-  users.value = users.value.filter(({ id }) => id !== user.id);
-}
+// async function deleteUser(user: User) {
+//   users.value = users.value.filter(({ id }) => id !== user.id);
+// }
 
-async function setUpdateUser(user: User) {
-  const { id } = modelUser.value;
+// async function setUpdateUser(user: User) {
+//   const { id } = modelUser.value;
 
-  // await apiClient.patch(`/users/${id}`, { name, email });
-  const userIndex = users.value.findIndex(({ id }) => id === user.id);
-  users.value[userIndex] = {
-    id,
-    name: modelUser.value.name,
-    email: modelUser.value.email,
-  };
-  modelUser.value.name = '';
-  modelUser.value.email = '';
-}
+//   // await apiClient.patch(`/users/${id}`, { name, email });
+//   const userIndex = users.value.findIndex(({ id }) => id === user.id);
+//   users.value[userIndex] = {
+//     id,
+//     name: modelUser.value.name,
+//     email: modelUser.value.email,
+//   };
+//   modelUser.value.name = '';
+//   modelUser.value.email = '';
+// }
 
-function changeUser(user: User) {
-  modelUser.value = { ...user };
-}
+// function changeUser(user: User) {
+//   modelUser.value = { ...user };
+// }
 
 const router = useRouter();
 
@@ -93,13 +65,13 @@ function onExit() {
   router.push('/');
 }
 
-onBeforeMount(getUsers);
+onBeforeMount(onUsers);
 </script>
 
 <template>
   <MainLayout>
     <template #header>
-      <div class="flex items-center justify-between w-[100%]">
+      <div class="flex items-center justify-between w-full">
         <RouterLink to="/">Главная</RouterLink>
         <Button @click="onExit">Выйти</Button>
       </div>
@@ -110,9 +82,9 @@ onBeforeMount(getUsers);
     <div v-for="user of users">
       <div :class="classes.buttonList">
         {{ user }}
-        <Button @click="changeUser(user)">change</Button>
+        <!-- <Button @click="changeUser(user)">change</Button>
         <Button @click="setUpdateUser(user)">update</Button>
-        <Button type="submit" @click.prevent="deleteUser(user)">DeleteUser</Button>
+        <Button type="submit" @click.prevent="deleteUser(user)">DeleteUser</Button> -->
       </div>
     </div>
     <InputForm v-model="modelUser.name" />
